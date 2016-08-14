@@ -1,0 +1,166 @@
+
+# Variables de configuration git
+GIT_NAME="Pseudo git";
+GIT_EMAIL="Email git";
+
+# Pour avoir le bon mail dans les headers 42
+MAIL="$USER@student.42.fr";
+
+# Ouvre Sublime Text
+alias st="open /Applications/Sublime\ Text.app"
+
+# Clear le terminal.
+alias c='clear';
+
+# cd .. multiples
+alias ..1="cd ..";
+alias ..2="cd ../..";
+alias ..3="cd ../../..";
+alias ..4="cd ../../../..";
+alias ..5="cd ../../../../..";
+
+# Affiche l'heure
+alias now="date +'%T'";
+
+# Cree un dossier et rentre dedans
+mkcd()
+{
+	if [ -n "$1" ]
+	then
+		mkdir $1 > /dev/null 2> /dev/null;
+		cd $1;
+	else
+		echo -e "\033[31mUsage: mkcd folder";
+	fi
+}
+
+# Renomme le dossier courant
+renamecurrentdir()
+{
+	if [ -n "$1" ]
+	then
+		FOLDER=`basename $PWD`;
+		cd ..;
+		mv $FOLDER $1;
+		cd $1;
+	else
+		echo -e "\033[31mUsage: renamecurrentdir name";
+	fi
+}
+
+# ------- GIT ------- #
+
+# Configure un dossier git avec tes identifiants
+setmygitconfig()
+{
+	git config user.name $GIT_NAME;
+	git config user.email $GIT_EMAIL;
+	getgitconfig;
+}
+
+# Configure un dossier git
+setgitconfig()
+{
+	if [ -n "$1" ] && [ -n "$2" ]
+	then
+		git config user.name $1;
+		git config user.email $2;
+		getgitconfig;
+	else
+		echo -e "\033[31mUsage: setgitconfig username useremail"
+	fi
+}
+
+# Affiche la configuration d'un dossier git
+getgitconfig()
+{
+	echo -e "\033[32mname:	\033[0m`git config user.name`";
+	echo -e "\033[32memail:	\033[0m`git config user.email`";
+}
+
+# ------- LDAP ------- #
+
+# Recherche le mobile d'un 42
+getmobile()
+{
+	if [ -n "$1" ]
+	then
+		echo -e "\033[32m`ldapsearch -Q uid=$1 mobile | grep mobile: | sed s/mobile://g | xargs`";
+	else
+		echo -e "\033[31mUsage: getmobile login";
+	fi
+}
+
+# Recherche le mail d'un 42
+getmail()
+{
+	if [ -n "$1" ]
+	then
+		echo -e "\033[32m`ldapsearch -Q uid=$1 alias | grep alias: | sed s/alias://g | xargs | tr ' ' '\n'`";
+	else
+		echo -e "\033[31mUsage: getmail login";
+	fi
+}
+
+# Recherche le prenom et le nom d'un 42
+getname()
+{
+	if [ -n "$1" ]
+	then
+		echo -e "\033[32m`ldapsearch -Q uid=$1 cn | grep cn: | sed s/cn://g | xargs`";
+	else
+		echo -e "\033[31mUsage: getname login";
+	fi
+}
+
+# Recherche un 42
+getstudent()
+{
+	if [ -n "$1" ]
+	then
+		getname $1;
+		getmail $1;
+		getmobile $1;
+	else
+		echo -e "\033[31mUsage: getstudent login";
+	fi
+}
+
+# ------- WEB ------- #
+
+# Ouvre une page web
+web()
+{
+	if [ -n "$1" ]
+	then
+		open http://$1;
+	else
+		echo -e "\033[31mUsage: web example.com";
+	fi
+}
+
+# Recherche google
+google()
+{
+	if [ -n "$1" ]
+	then
+		SEARCH=`echo $1 | sed s/\ /+/g`;
+		QUERY="https://www.google.fr/#safe=off&q=$SEARCH";
+		open $QUERY;
+	else
+		open "https://www.google.fr/";
+	fi
+}
+
+# Recherche youtube
+youtube()
+{
+	if [ -n "$1" ]
+	then
+		SEARCH=`echo $1 | sed s/\ /+/g`;
+		QUERY="https://www.youtube.com/results?search_query=$SEARCH";
+		open $QUERY;
+	else
+		open "https://www.youtube.com/";
+	fi
+}
