@@ -4,7 +4,7 @@ GIT_NAME="Pseudo git";
 GIT_EMAIL="Email git";
 
 # Pour avoir le bon mail dans les headers 42
-MAIL="$USER@student.42.fr";
+export MAIL="$USER@student.42.fr";
 
 # Ouvre Sublime Text
 alias st="open /Applications/Sublime\ Text.app"
