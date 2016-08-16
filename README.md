@@ -56,7 +56,7 @@ alias **now**="date +'%T'";
 
 **getstudent** *$1* -> Affiche les informations d'un 42 avec un login donné
 
-## web
+### web
 
 **web** *$1* -> Recherche une page web
 
